@@ -9,7 +9,7 @@ class Poll extends Model
     protected $table = 'polls';
 
     protected $fillable = [
-        ''
+        'description'
     ];
 
     public function options(){

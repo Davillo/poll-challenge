@@ -44,7 +44,7 @@ abstract class BaseRepository
 
     public function getById(int $id): ?Model
     {
-        return $this->model->find($id);
+        return $this->model->findOrFail($id);
     }
 
     public function exists(int $id): bool

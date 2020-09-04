@@ -1,33 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 
 <head>
-    <!-- Required meta tags-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="au theme template">
     <meta name="author" content="Hau Nguyen">
     <meta name="keywords" content="au theme template">
 
-    <!-- Title Page-->
-    <title>Cadastro de enquete</title>
+    <title>Visualização de enquete</title>
 
-    <!-- Fontfaces CSS-->
     <link href="{{asset('css/font-face.css') }}" rel="stylesheet" media="all">
     <link href="{{asset('css/font-awesome.min.css') }}"  rel="stylesheet" media="all">
     <link href="{{asset('css/fontawesome-all.min.css') }}"  rel="stylesheet" media="all">
     <link href="{{asset('css/material-design-iconic-font.min.css') }}" rel="stylesheet" media="all">
 
 
-    <!-- Bootstrap CSS-->
     <link href="{{asset('css/bootstrap.min.css') }}"  rel="stylesheet" media="all">
-
-    <!-- Vendor CSS-->
     <link href="{{asset('css/animsition.min.css') }}"  rel="stylesheet" media="all">
-
     <link href="{{asset('css/animate.css') }}"  rel="stylesheet" media="all">
-
-    <!-- Main CSS-->
     <link href="{{asset('css/theme.css') }}"  rel="stylesheet" media="all">
 
 </head>
@@ -39,7 +30,7 @@
                 <div class="header3-wrap">
                     <div class="header__logo">
                         <a href="/">
-                            Votações
+                            Votação
                         </a>
                     </div>
                 </div>
@@ -51,7 +42,7 @@
                 <div class="container-fluid">
                     <div class="header-mobile-inner">
                         <a class="logo" href="/">
-                            Votações
+                            Votação
                         </a>
 
                     </div>
@@ -74,10 +65,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <form action="/poll" method="POST">
-                                {{  csrf_field() }}
-
-                                @if(session('success'))
+                              @if(session('success'))
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 {{session('success')}}
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -94,6 +82,9 @@
                                 </button>
                                 </div>
                             @endif
+
+                            <form action="/poll/{{$poll->id}}/vote" method="POST">
+                                {{  csrf_field() }}
                                 <div class="col-lg-12">
                                     @if (count($errors) > 0)
                                         @foreach ($errors->all() as $error)
@@ -104,23 +95,32 @@
                                      @endif
                                 <div class="card">
                                     <div class="card-header">
-                                        <strong>Cadastro de enquete</strong>
+                                    <strong>Visualização de enquete - Visualizada {{$poll->total_views}} Vezes</strong>
                                     </div>
                                     <div class="card-body card-block">
                                         <div class="form-group">
                                         <label for="description" class=" form-control-label">Descrição</label>
-                                        <input type="text" value="{{old('description')}}"id="description" name="description" placeholder="Texto da enquete." class="form-control">
+                                        <input type="text" value="{{$poll->description}}"id="description" disabled class="form-control">
                                         </div>
 
                                         <table id="optionsTable">
                                             <thead>
                                                 <tr>
-                                                    <td><b>Opções</b></td>
+                                                    <td></td>
+                                                    <td align="center"><b>Votos</b></td>
                                                     <td class="col-sm-2"><b>Descrição  </b></td>
                                                 </tr>
                                             </thead>
                                             <tbody>
-
+                                                @foreach($poll->options as $option)
+                                                    <tr>
+                                                    <td align="center">
+                                                       <input type="radio" name="option_id" value="{{$option->id}}">
+                                                    </td>
+                                                        <td>{{$option->total_votes}}</td>
+                                                        <td class="col-sm-2"><b>{{$option->description}}</b></td>
+                                                    </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                         </div>
@@ -128,12 +128,9 @@
 
                                         <div class="card-footer">
 
-                                            <button type="button" id="addOption" class="btn btn-secondary btn-sm">
-                                            Adicionar opção
-                                            </button>
 
                                             <button type="submit" class="btn btn-primary btn-sm">
-                                            Salvar
+                                            Votar
                                             </button>
                                           </form>
                                         </div>

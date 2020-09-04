@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PollStoreRequest extends FormRequest
+class PollVoteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,15 +24,13 @@ class PollStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'description' => 'required|string',
-            'options' => 'array|required'
+            'option_id' => 'required|integer|exists:poll_options,id',
         ];
     }
 
     function messages(){
         return [
-            'description.required' => 'A descrição da enquete é obrigatória',
-            'options.required' => 'É necessário informar as opções da enquete'
+            'option_id.required' => 'É necessário escolher uma opção para votar.',
         ];
     }
 }

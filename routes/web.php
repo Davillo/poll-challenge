@@ -19,6 +19,5 @@ $router->group(['prefix' => '/poll'], function () use ($router) {
     $router->get('/', 'PollController@register');
     $router->post('/', 'PollController@store');
     $router->get('/{id}', 'PollController@show');
-    $router->post('/{id}/vote', 'PollVoteController@vote');
-    $router->post('/{id}/stats', 'PollStatsController@stats');
+    $router->post('/{id}/vote', 'PollController@vote');
 });
